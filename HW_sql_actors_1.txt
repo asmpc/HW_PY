@@ -1,0 +1,132 @@
+CREATE TABLE IF NOT EXISTS "actors"
+(
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+age INTEGER CHECK(0<age<100),
+sex TEXT CHECK("sex" = "male" or "sex" = "female"),
+country TEXT,
+name TEXT NOT NULL,
+last_name TEXT NOT NULL
+)
+
+ALTER TABLE actors
+ADD salary INTEGER
+
+ALTER TABLE actors
+DROP COLUMN salary
+
+INSERT INTO actors (name, last_name, age, sex, country) VALUES 
+("Leonardo", "DiCaprio", 50, "male", "USA"),
+("Kate", "Winslet", 49, "female", "UK"),
+("Shah Rukh", "Khan", 60, "male", "India"),
+("Marion", "Cotillard", 49, "female", "France"),
+("Jackie", "Chan", 71, "male", "China"),
+("Penélope", "Cruz", 51, "female", "Spain"),
+("Wagner", "Moura", 49, "male", "Brazil"),
+("Léa", "Seydoux", 40, "female", "France"),
+("Song", "Kang-ho", 59, "male", "South Korea"),
+("Margot", "Robbie", 35, "female", "Australia"),
+("Daniel", "Brühl", 47, "male", "Germany"),
+("Salma", "Hayek", 59, "female", "Mexico"),
+("Idris", "Elba", 53, "male", "UK"),
+("Alicia", "Vikander", 37, "female", "Sweden"),
+("Omar", "Sy", 48, "male", "France"),
+("Tom", "Hanks", 69, "male", "USA"),
+("Emma", "Stone", 37, "female", "USA"),
+("Chris", "Hemsworth", 42, "male", "Australia"),
+("Scarlett", "Johansson", 41, "female", "USA"),
+("Denzel", "Washington", 71, "male", "USA"),
+("Keira", "Knightley", 41, "female", "UK"),
+("Hugh", "Jackman", 57, "male", "Australia"),
+("Charlize", "Theron", 50, "female", "South Africa"),
+("Pedro", "Pascal", 51, "male", "Chile"),
+("Zhang", "Ziyi", 47, "female", "China"),
+("Rami", "Malek", 45, "male", "USA"),
+("Natalie", "Portman", 45, "female", "Israel"),
+("Ryan", "Gosling", 46, "male", "Canada"),
+("Gal", "Gadot", 41, "female", "Israel"),
+("Dev", "Patel", 36, "male", "UK")
+
+INSERT INTO actors ("name", "last_name") VALUES
+("Robert", "Downey Jr."),
+("Meryl", "Streep"),
+("Benedict", "Cumberbatch"),
+("Jennifer", "Lawrence"),
+("Takeshi", "Kitano")
+
+UPDATE actors
+SET country = "Unknown"
+WHERE country IS NULL
+
+UPDATE actors
+SET age = age + 2
+WHERE sex = "female" and age>40
+
+SELECT *
+FROM actors
+WHERE sex = "female" and age<38
+
+SELECT name, last_name, age
+FROM actors
+WHERE age > 0
+ORDER BY age
+LIMIT 5
+
+SELECT count(name), avg(age), min(age), max(age)
+FROM actors
+
+SELECT country,  5 < count(country) < 10
+FROM actors
+
+SELECT avg(age)
+FROM actors
+WHERE sex = "male"
+
+SELECT avg(age)
+FROM actors
+WHERE sex = "female"
+
+SELECT *
+FROM actors
+GROUP by country
+HAVING min(age)
+
+SELECT country
+FROM actors
+GROUP by country
+HAVING count(DISTINCT sex) = 1 and sex = "female"
+
+SELECT *
+FROM actors
+GROUP by country
+HAVING max(age)
+
+SELECT *
+FROM actors
+GROUP by country
+HAVING avg(age)
+ORDER BY avg(age) DESC
+LIMIT 1
+
+SELECT *
+FROM actors
+WHERE country IN 
+(SELECT country 
+FROM actors 
+WHERE sex = "female" and age >50)
+ORDER BY country
+
+SELECT country, sum(sex = "male")*100 / count(sex)
+FROM actors
+GROUP BY country
+ORDER BY sum(sex = "male")*100 / count(sex) DESC
+
+SELECT *
+FROM actors
+WHERE age IN 
+(SELECT age 
+FROM actors 
+GROUP BY age 
+HAVING count(*)>2)
+ORDER BY age DESC
+
+
